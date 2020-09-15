@@ -7,7 +7,7 @@ if the LinkedList has a cycle in it or not.
 
 // @ts-check
 
-const {ListNode} = require("./linked-list-cycle");
+const {ListNode, createSimpleList} = require("./linked-list-cycle");
 
 /**
  * @param {ListNode} head 
@@ -39,11 +39,10 @@ const find_cycle_length = function(head) {
     return cycleLength;
 }
 
-let head = new ListNode(1)
-head.next = new ListNode(2)
-head.next.next = new ListNode(3)
-head.next.next.next = new ListNode(4)
-head.next.next.next.next = new ListNode(5)
-head.next.next.next.next.next = new ListNode(6)
+module.exports = {find_cycle_length};
+
+let head = new ListNode(0)
+createSimpleList(head, 6)
+
 head.next.next.next.next.next.next = head.next.next.next
 console.log(find_cycle_length(head) === 3)
