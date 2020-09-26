@@ -29,6 +29,24 @@ const reverse = function(head) {
   
     return reversedHead;
 };
+
+/**
+ * @param {ListNode} head  
+ * @returns {ListNode}
+ */
+const reverseInPlace = function(head) {
+    let current = head;
+    let previous = null;
+
+    while (current !== null) {
+        const next = current.next;
+        current.next = previous;
+        previous = current;
+        current = next;
+    }
+
+    return previous;
+};
   
 const head = new ListNode(2);
 head.next = new ListNode(4);
@@ -36,4 +54,4 @@ head.next.next = new ListNode(6);
 head.next.next.next = new ListNode(8);
 head.next.next.next.next = new ListNode(10);
 
-console.log(reverse(head));
+console.log(reverseInPlace(head));
