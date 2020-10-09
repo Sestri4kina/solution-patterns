@@ -110,4 +110,95 @@ module.exports = class BinarySearchTree {
     searchBST(value) {
         return this.search(this.root, value);
     }
+
+    /**
+    * @param {TreeNode<number>} currentNode
+    * @param {number} value 
+    */
+    delete(currentNode, value) {
+        if (currentNode === null) {
+            return false;
+        }
+
+        let parentNode;
+        // check whether tree has the value to be deleted
+        while (currentNode && currentNode.value !== value) {
+            parentNode = currentNode;
+
+            if (value > currentNode.value) {
+                currentNode = currentNode.right;
+            } else {
+                currentNode = currentNode.left;
+            }
+        }
+
+        if (currentNode === null) {
+            return false;
+        }
+
+        // current node doesn't have children nodes
+        if (currentNode.left === null && currentNode.right === null) {
+            if (currentNode.value === this.root.value) {
+                thir.root = null;
+            }
+
+            if (parentNode.value < currentNode.value) {
+                parentNode.right = null;
+            }
+
+            if (parentNode.value > currentNode.value) {
+                parentNode.left = null;
+            }
+
+            return true;
+        }
+
+        // current node has only left child node
+        if (currentNode.right === null) {
+            if (currentNode.value === this.root.value) {
+                thir.root.left = currentNode.left;
+            }
+
+            if (parentNode.value < currentNode.value) {
+                parentNode.right = currentNode.left;
+            }
+
+            if (parentNode.value > currentNode.value) {
+                parentNode.left = currentNode.left;
+            }
+
+            return true;
+        }
+
+        // current node has only right child node
+        if (currentNode.left === null) {
+            if (currentNode.value === this.root.value) {
+                thir.root.left = currentNode.right;
+            }
+
+            if (parentNode.value < currentNode.value) {
+                parentNode.right = currentNode.right;
+            }
+
+            if (parentNode.value > currentNode.value) {
+                parentNode.left = currentNode.right;
+            }
+
+            return true;
+        }
+
+        // current node has two children
+        const minValueNode = currentNode.right;
+
+        while (minValueNode.left !== null) {
+            console.log(minValueNode)
+            minValueNode = minValueNode.left;
+        }
+
+        const minValue = minValueNode.value;
+        this.delete(this.root, minValueNode.value);
+        currentNode.value = minValue;
+        
+        return true;
+    }
 }
