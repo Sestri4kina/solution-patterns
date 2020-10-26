@@ -48,3 +48,42 @@ const profits = [1, 6, 10, 16];
 const weights = [1, 2, 3, 5];
 console.log(solveKnapsack(profits, weights, 7) === 22);
 console.log(solveKnapsack(profits, weights, 6) === 17);
+
+/** Top-down Dynamic Programming with Memoization */
+/**
+ * @param {Array<number>} profits
+ * @param {Array<number>} weights
+ * @param {number} capacity
+ * @returns {number}
+ */
+const solveKnapsackWithMemoization = (profits, weights, capacity) => {
+    const dp = [];
+
+    function knapsackRecursive(profits, weights, capacity, curIndex) {
+        if (capacity <= 0 || curIndex >= profits.length) {
+            return 0;
+        }
+
+        dp[curIndex] = dp[curIndex] || [];
+        if (dp[curIndex][capacity] !== undefined) {
+            return dp[curIndex][capacity];
+        }
+
+        let withinCapacityProfit = 0;
+        if (weights[curIndex] <= capacity) {
+            withinCapacityProfit = profits[curIndex] + 
+                knapsackRecursive(profits, weights, capacity - weights[curIndex], curIndex + 1);
+        }
+
+        const profit = knapsackRecursive(profits, weights, capacity, curIndex + 1);
+
+        dp[curIndex][capacity] = Math.max(withinCapacityProfit, profit);
+
+        return dp[curIndex][capacity];
+    }
+
+    return knapsackRecursive(profits, weights, capacity, 0);
+}
+
+console.log(solveKnapsackWithMemoization(profits, weights, 7) === 22);
+console.log(solveKnapsackWithMemoization(profits, weights, 6) === 17);
