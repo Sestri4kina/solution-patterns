@@ -62,3 +62,38 @@ const hasSubsetWithSum = function(nums, sum) {
 console.log(hasSubsetWithSum([1, 2, 3, 7], 6) === true);
 console.log(hasSubsetWithSum([1, 2, 7, 1, 5], 10) === true);
 console.log(hasSubsetWithSum([1, 3, 4, 8], 6) === false);
+
+/**
+ * @param {Array<number>} nums
+ * @param {number} sum
+ * @returns {boolean}
+ */
+const hasSubsetWithSumBottonUpDP = function(nums, sum) {
+    const length = nums.length;
+    /** @type {Array<Array<boolean>>} */
+    const dp = Array.from(new Array(length)).map(_ => new Array(sum + 1).fill(false));
+
+    for (let i = 0; i < length; i++) {
+        dp[i][0] = true;
+    }
+
+    for (let i = 0; i <= sum; i++) {
+        dp[0][i] = nums[0] === i;
+    }
+
+    for (let i = 1; i < length; i++) {
+        for (let s = 1; s <= sum; s++) {
+            if (dp[i-1][s]) {
+                dp[i][s] = true;
+            } else if (s >= nums[i]) {
+                dp[i][s] = dp[i-1][s - nums[i]];
+            }
+        }
+    }
+
+    return dp[length - 1][sum];
+}
+
+console.log(hasSubsetWithSumBottonUpDP([1, 2, 3, 7], 6) === true);
+console.log(hasSubsetWithSumBottonUpDP([1, 2, 7, 1, 5], 10) === true);
+console.log(hasSubsetWithSumBottonUpDP([1, 3, 4, 8], 6) === false);
